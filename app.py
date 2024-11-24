@@ -8,16 +8,16 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.preprocessing import LabelEncoder
+
 le = LabelEncoder()
 
 app = Flask(__name__)
-@app.route('/')
 
+@app.route('/')
 def home():
     return render_template("home.html")
 
-@app.route("/predict", methods = ["POST"])
-
+@app.route("/predict", methods=["POST"])
 def predict():
     # loading the dataset
     data = pd.read_csv("language_detection.csv")
@@ -26,7 +26,7 @@ def predict():
     # label encoding
     y = le.fit_transform(y)
 
-    #loading the model and cv
+    # loading the model and cv
     model = pickle.load(open("model.pkl", "rb"))
     cv = pickle.load(open("transform.pkl", "rb"))
 
@@ -44,10 +44,7 @@ def predict():
         my_pred = model.predict(vect)
         my_pred = le.inverse_transform(my_pred)
 
-    return render_template("home.html", pred=" The above text is in {}".format(my_pred[0]))
+    return render_template("home.html", pred="The above text is in {}".format(my_pred[0]))
 
-
-
-
-if __name__ =="__main__":
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run()
